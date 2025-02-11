@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(to bottom right, #ffe6e6, #ffb3b3);
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #d6336c;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .button-container, .form-container {
+            margin-top: 20px;
+        }
+
+        button {
+            font-size: 1.5rem;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        #yes-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #no-button {
+            background-color: #f44336;
+            color: white;
+            position: absolute;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #thank-you-container {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .background-animation img {
+            position: absolute;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-20px) rotate(15deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        #signup-form input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #signup-form button {
+            background-color: #d6336c;
+            color: white;
+        }
+
+        #message-container button {
+            background-color: #d6336c;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <img src="https://via.placeholder.com/50x50" style="left: 20%; top: 10%;" />
+        <img src="https://via.placeholder.com/50x50" style="right: 30%; top: 20%;" />
+        <img src="https://via.placeholder.com/50x50" style="left: 40%; bottom: 10%;" />
+        <img src="https://via.placeholder.com/50x50" style="right: 10%; bottom: 15%;" />
+    </div>
+
+    <div id="passcode-container">
+        <h1>Enter Passcode</h1>
+        <input type="password" id="passcode" placeholder="Enter passcode" />
+        <button onclick="checkPasscode()">Submit</button>
+    </div>
+
+    <div id="signup-container" class="hidden">
+        <h1>Sign Up</h1>
+        <form id="signup-form">
+            <input type="text" id="name" placeholder="Name" required /><br>
+            <input type="number" id="age" placeholder="Age" required /><br>
+            <input type="text" id="sex" placeholder="Sex" required /><br>
+            <input type="email" id="gmail" placeholder="Gmail" required /><br>
+            <input type="text" id="school" placeholder="School" required /><br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div id="message-container" class="hidden">
+        <h1>Hi, how are you my beautiful baby.</h1>
+        <p>I just wanted you to know that I made this little trick to invite you for this coming Valentine's.</p>
+        <button onclick="proceedToMain()">Proceed</button>
+    </div>
+
+    <div id="main-container" class="hidden">
+        <h1>Will You Be My Valentine?</h1>
+        <div class="button-container">
+            <button id="yes-button">Yes</button>
+            <button id="no-button">No</button>
+        </div>
+    </div>
+
+    <div id="thank-you-container">
+        <h1>Thank You!</h1>
+        <p>Thank you for saying yes! You just made my day extra special!</p>
+    </div>
+
+    <script>
+        const passcodeContainer = document.getElementById('passcode-container');
+        const signupContainer = document.getElementById('signup-container');
+        const messageContainer = document.getElementById('message-container');
+        const mainContainer = document.getElementById('main-container');
+        const thankYouContainer = document.getElementById('thank-you-container');
+        const noButton = document.getElementById('no-button');
+        const yesButton = document.getElementById('yes-button');
+
+        // Ensure thank-you container is initially hidden
+        thankYouContainer.classList.add('hidden');
+
+        // Force fullscreen
+        if (screen.width > 768) {
+            document.documentElement.requestFullscreen();
+        }
+
+        function checkPasscode() {
+            const passcode = document.getElementById('passcode').value;
+            if (passcode === '1226') {
+                passcodeContainer.classList.add('hidden');
+                signupContainer.classList.remove('hidden');
+            } else {
+                alert('Incorrect passcode!');
+            }
+        }
+
+        document.getElementById('signup-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const sex = document.getElementById('sex').value;
+            const gmail = document.getElementById('gmail').value;
+            const school = document.getElementById('school').value;
+
+            sessionStorage.setItem('signupData', JSON.stringify({ name, age, sex, gmail, school }));
+            signupContainer.classList.add('hidden');
+            messageContainer.classList.remove('hidden');
+        });
+
+        function proceedToMain() {
+            messageContainer.classList.add('hidden');
+            mainContainer.classList.remove('hidden');
+        }
+
+        // Make the "No" button move randomly
+        noButton.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+        });
+
+        // Show thank-you message when "Yes" button is clicked
+        yesButton.addEventListener('click', () => {
+            mainContainer.classList.add('hidden');
+            thankYouContainer.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
